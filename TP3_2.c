@@ -6,19 +6,39 @@ int main()
 {
     char **v; 
     char buffer[100]; 
-    v = (char *)malloc(5 * sizeof(char*));
-
-
-    printf("ingrese 5 nombres: ");
+    v = (char **)malloc(5 * sizeof(char*));
+    if (v == NULL) //control para saber si se esta asignando memoria
+    {
+        printf("No se agrego la memoria");
+        return 1;
+    }
+    
+    printf("ingrese 5 nombres: \n");
     for (int i = 0; i < 5; i++)
     {
-        printf("Ingrse unn nombre: ");
         gets(buffer);
-        v[i] = (char *) malloc(*buffer*sizeof(char));
+        //aca voy a agregar el strelen para que cuente la cantidad de caracteres que tiene el nombre
+        v[i] = (char *) malloc((strlen(buffer) + 1)*sizeof(char));
+        //controlo si le asigno la memoria en i
+        if (v[i]==NULL)
+        {
+            printf("Error: no se asigno en v[%d] ", i);
+            return 1;
+        }
+        //copio el nombre en i
+        strcpy(v[i], buffer);
     }
+    //muestro los nombres
+    printf("Los nombres guardados son:\n");
     for (int i = 0; i < 5; i++)
     {
-        // puts(*v[i]);
+        printf("%d. %s \n", i + 1, v[i]);
     }
+    //libero memoria
+    for (int i = 0; i < 5; i++)
+    {
+        free(v[i]);
+    }
+    
     return 0;
 }
